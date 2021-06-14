@@ -14,12 +14,6 @@ public with sharing class CanTheUser {
     @testVisible
     private static Map<String, Set<String>> updatableFieldsByObject = new Map<String, Set<String>>();
 
-    /**
-     * @description Internal custom exception class
-     */
-    public class CanTheUserException extends Exception {
-    }
-
     public enum CrudType {
         CREATE,
         READ,
@@ -32,6 +26,12 @@ public with sharing class CanTheUser {
         UPDATABLE
     }
 
+    /**
+     * @description This variable stores, within the same transaction, all previously calculated 
+     * FLS results for an object. This prevents multiple calls to this library within the same 
+     * transaction from executing more than a single describe call.
+     * @return   return description
+     */
     Map<String, Map<FLSType, Boolean>> memoizedFLSResults = new Map<String, Map<FLSType, Boolean>>();
 
     /**
@@ -68,6 +68,10 @@ public with sharing class CanTheUser {
         return false;
     }
 
+    public Boolean crud(List<SObject> objs, CrudType permission) {
+        return this.crud(objs?.get(0), permission);
+    }
+
     /**
      * @description convenience api for determining if the running user can
      * create the specified object
@@ -77,7 +81,18 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.create(new Account()));
      **/
     public Boolean create(SObject obj) {
-        return new CanTheUser().crud(obj, CrudType.CREATE);
+        return this.crud(obj, CrudType.CREATE);
+    }
+
+    /**
+     * @descriptionconvenience api for determining if the running user can
+     * create the specified object
+     * @param  objs list of objects. Only the first will be checked. (logically, a list is of uniform type
+     * and, and if the user can create one)
+     * @return      return boolean
+     */
+    public Boolean create(List<SObject> objs) {
+        return this.crud(objs?.get(0), CrudType.CREATE);
     }
 
     /**
@@ -89,7 +104,18 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.read(new Account()));
      **/
     public Boolean read(SObject obj) {
-        return new CanTheUser().crud(obj, CrudType.READ);
+        return this.crud(obj, CrudType.READ);
+    }
+
+    /**
+     * @description convenience api for determining if the running user can
+     * read / access the specified objects
+     * @param obj object type to check read permissions on
+     * @return Boolean
+     * @example
+     **/
+    public Boolean read(List<SObject> objs){
+        return this.crud(objs?.get(0), CrudType.READ);
     }
 
     /**
@@ -101,7 +127,18 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.edit(new Account()));
      **/
     public Boolean edit(SObject obj) {
-        return new CanTheUser().crud(obj, CrudType.EDIT);
+        return this.crud(obj, CrudType.EDIT);
+    }
+
+    /**
+     * @description convenience api for determining if the running user can
+     * edit / update the specified objects
+     * @param obj object type to check edit permissions on
+     * @return Boolean
+     * @example
+     **/
+    public Boolean edit(List<SObject> objs) {
+        return this.crud(objs?.get(0), CrudType.EDIT);
     }
 
     /**
@@ -113,7 +150,11 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.destroy(new Account()));
      **/
     public Boolean destroy(SObject obj) {
-        return new CanTheUser().crud(obj, CrudType.DEL);
+        return this.crud(obj, CrudType.DEL);
+    }
+
+    public Boolean destroy(List<SObject> objs) {
+        return this.crud(objs?.get(0), CrudType.DEL);
     }
 
     /**
