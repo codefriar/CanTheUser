@@ -27,8 +27,8 @@ public with sharing class CanTheUser {
     }
 
     /**
-     * @description This variable stores, within the same transaction, all previously calculated 
-     * FLS results for an object. This prevents multiple calls to this library within the same 
+     * @description This variable stores, within the same transaction, all previously calculated
+     * FLS results for an object. This prevents multiple calls to this library within the same
      * transaction from executing more than a single describe call.
      * @return   return description
      */
@@ -114,7 +114,7 @@ public with sharing class CanTheUser {
      * @return Boolean
      * @example
      **/
-    public Boolean read(List<SObject> objs){
+    public Boolean read(List<SObject> objs) {
         return this.crud(objs?.get(0), CrudType.READ);
     }
 
@@ -236,10 +236,11 @@ public with sharing class CanTheUser {
         String field,
         FLSType checkType
     ) {
-        if(this.memoizedFLSResults.get(field.toLowerCase()) == null){
+        if (this.memoizedFLSResults.get(field.toLowerCase()) == null) {
             this.memoizedFLSResults.putAll(calculateFLS(obj));
-        } 
-        Boolean results = this.memoizedFLSResults.get(field.toLowerCase())?.get(checkType);
+        }
+        Boolean results = this.memoizedFLSResults.get(field.toLowerCase())
+            ?.get(checkType);
         return (results != null && results) ? true : false;
     }
 

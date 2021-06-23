@@ -3,9 +3,9 @@ private inherited sharing class CanTheUser_Tests {
     // These tests rely on the assumption that standard FLS/CRUD have not been modified
     // by the user, and use the Account Object for verification of the Can Logic.
 
-    private static List<Account> generateAccounts(){
+    private static List<Account> generateAccounts() {
         List<Account> accounts = new List<Account>();
-        for(Integer i = 0; i < 2; i++){
+        for (Integer i = 0; i < 2; i++) {
             accounts.add(new Account());
         }
         return accounts;
@@ -14,7 +14,8 @@ private inherited sharing class CanTheUser_Tests {
     @isTest
     static void canCrudAccountCreatePositive() {
         System.assert(
-            new CanTheUser().crud(generateAccounts(), CanTheUser.CrudType.CREATE),
+            new CanTheUser()
+                .crud(generateAccounts(), CanTheUser.CrudType.CREATE),
             'Unless scratch org defaults have been changed by the user, this test should pass - asserting that users can create accounts'
         );
         System.assert(
@@ -126,10 +127,8 @@ private inherited sharing class CanTheUser_Tests {
     @isTest
     static void getBulkFLSAccessibleWithAccountPositive() {
         Set<String> fields = new Set<String>{ 'name', 'id' };
-        Map<String, Boolean> bulkCheck = new CanTheUser().bulkFLSAccessible(
-            'Account',
-            fields
-        );
+        Map<String, Boolean> bulkCheck = new CanTheUser()
+            .bulkFLSAccessible('Account', fields);
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
@@ -141,10 +140,8 @@ private inherited sharing class CanTheUser_Tests {
     @isTest
     static void getBulkFLSAccessibleWithAccountPositiveWithNegativeResults() {
         Set<String> fields = new Set<String>{ 'name', 'nonExistingField__c' };
-        Map<String, Boolean> bulkCheck = new CanTheUser().bulkFLSAccessible(
-            'Account',
-            fields
-        );
+        Map<String, Boolean> bulkCheck = new CanTheUser()
+            .bulkFLSAccessible('Account', fields);
 
         System.assert(
             bulkCheck.get('name'),
@@ -160,10 +157,8 @@ private inherited sharing class CanTheUser_Tests {
     @isTest
     static void getBulkFLSUpdatableWithAccountPositive() {
         Set<String> fields = new Set<String>{ 'name', 'ShippingStreet' };
-        Map<String, Boolean> bulkCheck = new CanTheUser().bulkFLSUpdatable(
-            'Account',
-            fields
-        );
+        Map<String, Boolean> bulkCheck = new CanTheUser()
+            .bulkFLSUpdatable('Account', fields);
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
@@ -175,10 +170,8 @@ private inherited sharing class CanTheUser_Tests {
     @isTest
     static void getBulkFLSUpdatableWithAccountPositiveWithNegativeResults() {
         Set<String> fields = new Set<String>{ 'name', 'nonExistingField__c' };
-        Map<String, Boolean> bulkCheck = new CanTheUser().bulkFLSUpdatable(
-            'Account',
-            fields
-        );
+        Map<String, Boolean> bulkCheck = new CanTheUser()
+            .bulkFLSUpdatable('Account', fields);
 
         System.assert(
             bulkCheck.get('name'),
@@ -190,5 +183,4 @@ private inherited sharing class CanTheUser_Tests {
             'Expected the name ' + 'field to be accesible on Account'
         );
     }
-
 }

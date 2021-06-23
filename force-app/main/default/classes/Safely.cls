@@ -1,49 +1,125 @@
 /**
  * @description Class wraps DML Calls in FLS / Crud checks.
- * Depends on CanTheUser.
  */
 public with sharing class Safely {
-  public class RemovedFieldsException extends Exception {
-  }
+    @testVisible
+    private Boolean allOrNothing = false;
+    @testVisible
+    private Boolean throwIfRemovedFields = false;
 
-  private Boolean allOrNothing = false;
-  private Boolean throwIfRemovedFields = false;
-
-  public Safely allOrNothing() {
-    this.allOrNothing = true;
-    return this;
-  }
-
-  public Safely throwIfRemovedFields() {
-    this.throwIfRemovedFields = true;
-    return this;
-  }
-
-  public Database.SaveResult doDML(
-    AccessType accessType,
-    List<SObject> records
-  ) {
-  }
-
-  public Database.SaveResult doInsert(List<SObject> records) {
-    SObjectAccessDecision securityDecision = Security.stripInaccessible(
-      AccessType.CREATABLE,
-      records,
-      true
-    );
-
-    Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
-    if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
-      throw new RemovedFieldsException(
-        'ThrowIfRemovedFields is enabled and the following fields were removed: ' +
-        removedFields
-      );
+    public class RemovedFieldsException extends Exception {
     }
 
-    return Database.insert(securityDecision.getRecords(), this.allOrNothing);
-  }
+    public Safely allOrNothing() {
+        this.allOrNothing = true;
+        return this;
+    }
 
-  public Database.SaveResult doInsert(SObject record) {
-    doInsert(new List<Sobject>{ record });
-  }
+    public Safely throwIfRemovedFields() {
+        this.throwIfRemovedFields = true;
+        return this;
+    }
+
+    /// Insert
+    public List<Database.SaveResult> doInsert(List<SObject> records) {
+        return doDML(System.AccessType.CREATABLE, records);
+    }
+
+    public List<Database.SaveResult> doInsert(SObject record) {
+        return doInsert(new List<Sobject>{ record });
+    }
+
+    /// Update
+    public List<Database.SaveResult> doUpdate(List<SObject> records) {
+        return doDML(System.AccessType.UPDATABLE, records);
+    }
+
+    public List<Database.SaveResult> doUpdate(SObject record) {
+        return doUpdate(new List<Sobject>{ record });
+    }
+
+    /// Upsert
+    public List<Database.UpsertResult> doUpsert(List<SObject> records) {
+        SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
+            AccessType.UPSERTABLE,
+            records
+        );
+
+        return Database.upsert(
+            securityDecision.getRecords(),
+            this.allOrNothing
+        );
+    }
+
+    public List<Database.UpsertResult> doUpsert(Sobject record) {
+        return doUpsert(new List<Sobject>{ record });
+    }
+
+    /// Delete
+    public List<Database.DeleteResult> doDelete(List<SObject> records) {
+        if (new CanTheUser().destroy(records)) {
+            return Database.delete(records, this.allOrNothing);
+        }
+        return new List<Database.DeleteResult>();
+    }
+
+    public List<Database.DeleteResult> doDelete(SObject record) {
+        return doDelete(new List<Sobject>{ record });
+    }
+
+    /// Query - AKA Read
+    public List<SObject> doQuery(String query) {
+        List<SObject> records = Database.query(query);
+        SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
+            AccessType.READABLE,
+            records
+        );
+        return securityDecision.getRecords();
+    }
+
+    /// Private Methods
+    private List<Database.SaveResult> doDML(
+        System.AccessType accessType,
+        List<SObject> records
+    ) {
+        SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
+            accessType,
+            records
+        );
+
+        switch on accessType {
+            when CREATABLE {
+                return Database.insert(
+                    securityDecision.getRecords(),
+                    this.allOrNothing
+                );
+            }
+            when UPDATABLE {
+                return Database.update(
+                    securityDecision.getRecords(),
+                    this.allOrNothing
+                );
+            }
+        }
+        return new List<Database.SaveResult>();
+    }
+
+    private SObjectAccessDecision guardAgainstRemovedFields(
+        System.AccessType accessType,
+        List<SObject> records
+    ) {
+        SObjectAccessDecision securityDecision = Security.stripInaccessible(
+            accessType, // What kind of Access are we checking?
+            records, // The records to check
+            true // <- true here also enforces CRUD.
+        );
+        Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
+        if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
+            throw new RemovedFieldsException(
+                'ThrowIfRemovedFields is enabled and the following fields were removed: ' +
+                removedFields
+            );
+        }
+        return securityDecision;
+    }
 }
