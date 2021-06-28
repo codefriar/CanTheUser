@@ -45,6 +45,23 @@ private class Safely_Tests {
     }
 
     @isTest
+    static void testDoInsertMethodsNegative() {
+        User ma = makeMinimumAccessUser();
+        System.runAs(ma){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+            Test.startTest();
+            List<Database.SaveResult> results = new Safely().doInsert(account);
+            Test.stopTest();
+            System.assertEquals(
+                0,
+                results.size(),
+                'Expected zero save results in the list'
+            );
+        }
+    }
+
+    @isTest
     static void testDoUpdateMethodsPositive() {
 
         PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
@@ -80,6 +97,40 @@ private class Safely_Tests {
     }
 
     @isTest
+    static void testDoUpdateMethodsNegative() {
+
+        PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(ParentId = ps.Id, SobjectType = 'Account');
+        op.PermissionsRead = true;
+        op.PermissionsCreate = true;
+        op.PermissionsEdit = false;
+        insert op;
+
+        User ma = makeMinimumAccessUser();
+        insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = ma.Id);
+        System.runAs(ma){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+            System.assert(new CanTheUser().create(account));
+            insert account;
+
+
+            Test.startTest();
+            account.Name = 'UpdatedAccount';
+            System.assert(!(new CanTheUser().edit(account)));
+            List<Database.SaveResult> results = new Safely().doUpdate(account);
+            Test.stopTest();
+
+            System.assertEquals(
+                0,
+                results.size(),
+                'Expected zero update results in the list'
+            );
+        }
+    }
+
+    @isTest
     static void testDoUpsertMethodsPositive() {
 
         PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
@@ -95,8 +146,7 @@ private class Safely_Tests {
         System.runAs(ma){
 
             Account account = (Account) new Account(name = 'TestAccount');
-
-            System.assert(new CanTheUser().create(account));
+            System.assert(new CanTheUser().ups(account));
 
             Test.startTest();
 
@@ -118,6 +168,37 @@ private class Safely_Tests {
                 'Expected one upsert (update) result in the list'
             );
             System.assert(results.get(0).success, 'This dml should succeed');
+        }
+    }
+
+    @isTest
+    static void testDoUpsertMethodsNegative() {
+
+        PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(ParentId = ps.Id, SobjectType = 'Account');
+        op.PermissionsRead = true;
+        op.PermissionsEdit = false;
+        op.PermissionsCreate = true;
+        insert op;
+
+        User ma = makeMinimumAccessUser();
+        insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = ma.Id);
+        System.runAs(ma){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+            System.assert(new CanTheUser().create(account));
+            System.assertEquals(false, new CanTheUser().edit(account));
+
+            Test.startTest();
+
+            List<Database.UpsertResult> results = new Safely().doUpsert(account);
+
+            System.assertEquals(
+                0,
+                results.size(),
+                'Expected zero upsert (insert) results in the list'
+            );
         }
     }
 
@@ -157,6 +238,40 @@ private class Safely_Tests {
     }
 
     @isTest
+    static void testDoDeleteMethodsNegative() {
+
+        PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(ParentId = ps.Id, SobjectType = 'Account');
+        op.PermissionsRead = true;
+        op.PermissionsCreate = true;
+        op.PermissionsEdit = true;
+        op.PermissionsDelete = false;
+        insert op;
+
+        User ma = makeMinimumAccessUser();
+        insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = ma.Id);
+        System.runAs(ma){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+
+            System.assert(new CanTheUser().create(account));
+            insert account;
+
+            Test.startTest();
+            System.assertEquals(false, new CanTheUser().destroy(account));
+            List<Database.DeleteResult> results = new Safely().doDelete(account);
+            Test.stopTest();
+
+            System.assertEquals(
+                0,
+                results.size(),
+                'Expected zero delete result in the list'
+            );
+        }
+    }
+
+    @isTest
     static void testDoQueryMethodsPositive() {
 
         PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
@@ -180,6 +295,40 @@ private class Safely_Tests {
             Test.startTest();
             System.assert(new CanTheUser().read(new Account()));
             List<Account> acctList = (List<Account>) new Safely().doQuery('SELECT Id FROM Account');
+            Test.stopTest();
+
+            System.assertEquals(
+                1,
+                acctList.size(),
+                'Expected one query result in the list'
+            );
+        }
+    }
+
+    @isTest
+    static void testDoQueryMethodsInaccessibleFields() {
+
+        PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(ParentId = ps.Id, SobjectType = 'Account');
+        op.PermissionsRead = true;
+        op.PermissionsViewAllRecords = true;
+        insert op;
+
+        System.runAs(new User(Id = UserInfo.getUserId())){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+            System.assert(new CanTheUser().create(account));
+            insert account;
+        }
+
+        User ma = makeMinimumAccessUser();
+        insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = ma.Id);
+
+        System.runAs(ma){
+            Test.startTest();
+            System.assert(new CanTheUser().read(new Account()));
+            List<Account> acctList = (List<Account>) new Safely().doQuery('SELECT Id, Type, NumberOfEmployees FROM Account');
             Test.stopTest();
 
             System.assertEquals(

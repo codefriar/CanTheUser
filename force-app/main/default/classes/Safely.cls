@@ -22,7 +22,10 @@ public with sharing class Safely {
 
     /// Insert
     public List<Database.SaveResult> doInsert(List<SObject> records) {
-        return doDML(System.AccessType.CREATABLE, records);
+		if (new CanTheUser().create(records)) {
+        	return doDML(System.AccessType.CREATABLE, records);
+		}
+		return new List<Database.SaveResult>();
     }
 
     public List<Database.SaveResult> doInsert(SObject record) {
@@ -31,7 +34,10 @@ public with sharing class Safely {
 
     /// Update
     public List<Database.SaveResult> doUpdate(List<SObject> records) {
-        return doDML(System.AccessType.UPDATABLE, records);
+		if (new CanTheUser().edit(records)) {
+        	return doDML(System.AccessType.UPDATABLE, records);
+		}
+		return new List<Database.SaveResult>();
     }
 
     public List<Database.SaveResult> doUpdate(SObject record) {
@@ -40,15 +46,18 @@ public with sharing class Safely {
 
     /// Upsert
     public List<Database.UpsertResult> doUpsert(List<SObject> records) {
-        SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
-            AccessType.UPSERTABLE,
-            records
-        );
+		if (new CanTheUser().edit(records) && new CanTheUser().create(records)) {
+			SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
+				AccessType.UPSERTABLE,
+				records
+			);
 
-        return Database.upsert(
-            securityDecision.getRecords(),
-            this.allOrNothing
-        );
+			return Database.upsert(
+				securityDecision.getRecords(),
+				this.allOrNothing
+			);
+		}
+		return new List<Database.UpsertResult>();
     }
 
     public List<Database.UpsertResult> doUpsert(Sobject record) {

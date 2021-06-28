@@ -84,6 +84,18 @@ private inherited sharing class CanTheUser_Tests {
     }
 
     @isTest
+    static void canCrudUpsertAccountPositive() {
+        System.assert(
+            new CanTheUser().ups(generateAccounts()),
+            'Expected to be able to upsert accounts'
+        );
+        System.assert(
+            new CanTheUser().ups(new Account()),
+            'Expected to be able to upsert accounts'
+        );
+    }
+
+    @isTest
     static void canCrudAccountDeletePositive() {
         System.assert(
             new CanTheUser().crud(generateAccounts(), CanTheUser.CrudType.DEL),
