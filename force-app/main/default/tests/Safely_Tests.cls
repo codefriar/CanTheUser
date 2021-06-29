@@ -77,13 +77,13 @@ private class Safely_Tests {
         System.runAs(ma){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
 
 
             Test.startTest();
             account.Name = 'UpdatedAccount';
-            System.assert(new CanTheUser().edit(account));
+            System.assert(CanTheUser.edit(account));
             List<Database.SaveResult> results = new Safely().doUpdate(account);
             Test.stopTest();
 
@@ -112,13 +112,13 @@ private class Safely_Tests {
         System.runAs(ma){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
 
 
             Test.startTest();
             account.Name = 'UpdatedAccount';
-            System.assert(!(new CanTheUser().edit(account)));
+            System.assert(!(CanTheUser.edit(account)));
             List<Database.SaveResult> results = new Safely().doUpdate(account);
             Test.stopTest();
 
@@ -146,7 +146,7 @@ private class Safely_Tests {
         System.runAs(ma){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().ups(account));
+            System.assert(CanTheUser.ups(account));
 
             Test.startTest();
 
@@ -187,8 +187,8 @@ private class Safely_Tests {
         System.runAs(ma){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().create(account));
-            System.assertEquals(false, new CanTheUser().edit(account));
+            System.assert(CanTheUser.create(account));
+            System.assertEquals(false, CanTheUser.edit(account));
 
             Test.startTest();
 
@@ -220,11 +220,11 @@ private class Safely_Tests {
 
             Account account = (Account) new Account(name = 'TestAccount');
 
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
 
             Test.startTest();
-            System.assert(new CanTheUser().destroy(account));
+            System.assert(CanTheUser.destroy(account));
             List<Database.DeleteResult> results = new Safely().doDelete(account);
             Test.stopTest();
 
@@ -255,11 +255,11 @@ private class Safely_Tests {
 
             Account account = (Account) new Account(name = 'TestAccount');
 
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
 
             Test.startTest();
-            System.assertEquals(false, new CanTheUser().destroy(account));
+            System.assertEquals(false, CanTheUser.destroy(account));
             List<Database.DeleteResult> results = new Safely().doDelete(account);
             Test.stopTest();
 
@@ -284,7 +284,7 @@ private class Safely_Tests {
         System.runAs(new User(Id = UserInfo.getUserId())){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
         }
 
@@ -293,7 +293,7 @@ private class Safely_Tests {
 
         System.runAs(ma){
             Test.startTest();
-            System.assert(new CanTheUser().read(new Account()));
+            System.assert(CanTheUser.read(new Account()));
             List<Account> acctList = (List<Account>) new Safely().doQuery('SELECT Id FROM Account');
             Test.stopTest();
 
@@ -318,7 +318,7 @@ private class Safely_Tests {
         System.runAs(new User(Id = UserInfo.getUserId())){
 
             Account account = (Account) new Account(name = 'TestAccount');
-            System.assert(new CanTheUser().create(account));
+            System.assert(CanTheUser.create(account));
             insert account;
         }
 
@@ -327,7 +327,7 @@ private class Safely_Tests {
 
         System.runAs(ma){
             Test.startTest();
-            System.assert(new CanTheUser().read(new Account()));
+            System.assert(CanTheUser.read(new Account()));
             List<Account> acctList = (List<Account>) new Safely().doQuery('SELECT Id, Type, NumberOfEmployees FROM Account');
             Test.stopTest();
 
@@ -336,6 +336,40 @@ private class Safely_Tests {
                 acctList.size(),
                 'Expected one query result in the list'
             );
+        }
+    }
+
+    @isTest
+    static void testDoQueryMethodsInaccessibleFieldsThrowException() {
+
+        PermissionSet ps = new PermissionSet(Label = 'testPermSet', Name = 'testPermSet');
+        insert ps;
+        ObjectPermissions op = new ObjectPermissions(ParentId = ps.Id, SobjectType = 'Account');
+        op.PermissionsRead = true;
+        op.PermissionsViewAllRecords = true;
+        insert op;
+
+        System.runAs(new User(Id = UserInfo.getUserId())){
+
+            Account account = (Account) new Account(name = 'TestAccount');
+            System.assert(CanTheUser.create(account));
+            insert account;
+        }
+
+        User ma = makeMinimumAccessUser();
+        insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = ma.Id);
+
+        System.runAs(ma){
+            Test.startTest();
+            System.assert(CanTheUser.read(new Account()));
+            Safely saf = new Safely();
+            saf.throwIfRemovedFields();
+            try{
+            List<Account> acctList = (List<Account>) saf.doQuery('SELECT Id, Type, NumberOfEmployees FROM Account');
+            } catch (Safely.RemovedFieldsException r){
+                System.assert(r.getMessage().containsIgnoreCase('numberofemployees'));
+            }
+            Test.stopTest();
         }
     }
 
@@ -371,7 +405,7 @@ private class Safely_Tests {
         testUser.TimeZoneSidKey 	= 'America/Chicago';
         testUser.EmailEncodingKey 	= 'UTF-8';
 
-        if(new CanTheUser().create(testUser)){
+        if(CanTheUser.create(testUser)){
             insert testUser;
             return testUser;
         }

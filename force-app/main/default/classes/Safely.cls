@@ -22,7 +22,7 @@ public with sharing class Safely {
 
     /// Insert
     public List<Database.SaveResult> doInsert(List<SObject> records) {
-		if (new CanTheUser().create(records)) {
+		if (CanTheUser.create(records)) {
         	return doDML(System.AccessType.CREATABLE, records);
 		}
 		return new List<Database.SaveResult>();
@@ -34,7 +34,7 @@ public with sharing class Safely {
 
     /// Update
     public List<Database.SaveResult> doUpdate(List<SObject> records) {
-		if (new CanTheUser().edit(records)) {
+		if (CanTheUser.edit(records)) {
         	return doDML(System.AccessType.UPDATABLE, records);
 		}
 		return new List<Database.SaveResult>();
@@ -46,7 +46,7 @@ public with sharing class Safely {
 
     /// Upsert
     public List<Database.UpsertResult> doUpsert(List<SObject> records) {
-		if (new CanTheUser().edit(records) && new CanTheUser().create(records)) {
+		if (CanTheUser.edit(records) && CanTheUser.create(records)) {
 			SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
 				AccessType.UPSERTABLE,
 				records
@@ -66,7 +66,7 @@ public with sharing class Safely {
 
     /// Delete
     public List<Database.DeleteResult> doDelete(List<SObject> records) {
-        if (new CanTheUser().destroy(records)) {
+        if (CanTheUser.destroy(records)) {
             return Database.delete(records, this.allOrNothing);
         }
         return new List<Database.DeleteResult>();
