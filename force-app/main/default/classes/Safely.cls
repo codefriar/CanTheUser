@@ -83,6 +83,13 @@ public with sharing class Safely {
             AccessType.READABLE,
             records
         );
+        Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
+        if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
+            throw new RemovedFieldsException(
+                'ThrowIfRemovedFields is enabled and the following fields were removed: ' +
+                removedFields
+            );
+        }
         return securityDecision.getRecords();
     }
 
