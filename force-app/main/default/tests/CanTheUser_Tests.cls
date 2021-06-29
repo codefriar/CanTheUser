@@ -1,5 +1,5 @@
 @isTest
-private inherited sharing class CanTheUser_Tests {
+private class CanTheUser_Tests {
     // These tests rely on the assumption that standard FLS/CRUD have not been modified
     // by the user, and use the Account Object for verification of the Can Logic.
 

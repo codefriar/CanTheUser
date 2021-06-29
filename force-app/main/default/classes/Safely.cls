@@ -83,13 +83,16 @@ public with sharing class Safely {
             AccessType.READABLE,
             records
         );
-        Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
+		// Note: We can never reach throwing this error because it will already be thrown
+		// in guardAgainstRemovedFields, since if a field is not readable, it is not
+		// updateable either.
+        /* Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
         if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
             throw new RemovedFieldsException(
                 'ThrowIfRemovedFields is enabled and the following fields were removed: ' +
                 removedFields
             );
-        }
+        } */
         return securityDecision.getRecords();
     }
 
@@ -116,8 +119,12 @@ public with sharing class Safely {
                     this.allOrNothing
                 );
             }
+			// impossible, but required by compiler
+			when else {
+				return new List<Database.SaveResult>();
+			}
         }
-        return new List<Database.SaveResult>();
+
     }
 
     private SObjectAccessDecision guardAgainstRemovedFields(
