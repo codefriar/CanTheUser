@@ -1,18 +1,78 @@
-# Salesforce DX Project: Next Steps
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+# CanTheUser / Safely
 
-## How Do You Plan to Deploy Your Changes?
+CanTheUser/Safely is a delightful and elegant way to handle CRUD and FLS Checks. It comes in two parts: CanTheUser, and Safely. CanTheUser is focused on determining if a user can do a given CRUD operation, and whether or not the user has access to specific fields via Field Level Security (FLS).
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+> CanTheUser/Safely is a library extraction from [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
 
-## Configure Your Salesforce DX Project
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## Badges
 
-## Read All About It
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-orange.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+[![CI Workflow](https://github.com/codefriar/CanTheUser/workflows/CI/badge.svg)](_https://github.com/codefriar/CanTheUser/actions?query=workflow%3ACI_)
+[![Packaging Workflow](https://github.com/codefriar/CanTheUser/workflows/Packaging/badge.svg)](_https://github.com/codefriar/CanTheUser/actions?query=workflow%3APackaging_) [![codecov](https://codecov.io/gh/codefriar/CanTheUser/branch/main/graph/badge.svg)](_https://codecov.io/gh/codefriar/CanTheUser_)
+[![Twitter](https://img.shields.io/twitter/follow/Codefriar.svg?style=social)](https://img.shields.io/twitter/follow/Codefriar.svg?style=social)
+## Contributing
 
--   [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
--   [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
--   [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
--   [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+Contributions are always welcome!
+
+See [`contributing.md`](https://github.com/codefriar/CanTheUser/blob/main/CONTRIBUTION.md) for ways to get started.
+
+Please adhere to this project's [`code of conduct`](https://github.com/codefriar/CanTheUser/blob/main/CODE_OF_CONDUCT.md).
+
+  
+## Installation
+
+To install or deploy CanTheUser/Safely you have three options:
+
+1. SPM Install: This is the preferred method, [but it requires SPM. Find out more here.](https://spm-registry.herokuapp.com/) 
+``` sfdx spm:install -n 'CanTheUser' ```
+1. Package Link: Click [this link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5e000000tprvAAA) to install the CanTheUser/Safely unlocked package in your org.
+2. Git Clone: This is an exercise left to the reader.
+
+## Usage/Examples
+
+### CanTheUser Examples
+
+CanTheUser is designed to be intuitive and easy to read and use. At a high level, it consists of CRUD checking methods that largely follow the permission names whenever that permission name is not an apex reserved word. For instance: the Read permission is checked with the Read() method. Sadly, delete is a keyword, so the delete permission is checked with destroy(). Each of these methods requires either an sObject to check or a list of sObjects to check. However, be careful when using mixed sObject lists (ie: `list<Sobject>`) rather than `list<ConcreteSObjectType>` as the list accepting variants use the first item in the list for checking.
+
+#### CRUD Checks
+
+Check for CREATE permission on Account
+
+`new CanTheUser().create(new Account());`
+
+or
+
+`new CanTheUser().create(accountList);`
+
+Check for READ permission on the Account object
+
+`new CanTheUser().read(new Account());`
+
+or
+
+`new CanTheUser().read(accountList);`
+
+Check for EDIT permissions on the Contact object
+
+`new CanTheUser.edit(new Contact());`
+
+or
+
+`new CanTheUser.edit(contactList);`
+
+Check for DELETE permissions on Contact object
+
+`new CanTheUser.destroy(new Contact());`
+
+or
+
+`new CanTheUser.destroy(contactList);`
+
+#### FLS Checks
+
+FLS checks are based on Object, Field and an FLSType enum - with values 
+## Acknowledgements
+
+- [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
