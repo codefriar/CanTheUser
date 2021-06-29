@@ -1,7 +1,7 @@
 
 # CanTheUser / Safely
 
-CanTheUser/Safely is a delightful and elegant way to handle CRUD and FLS Checks. It comes in two parts: CanTheUser, and Safely. CanTheUser is focused on determining if a user can do a given CRUD operation, and whether or not the user has access to specific fields via Field Level Security (FLS).
+CanTheUser/Safely is a delightful and elegant way to handle CRUD and FLS Checks. It comes in two parts: CanTheUser, and Safely. CanTheUser is focused on determining if a user can do a given CRUD operation, and whether or not the user has access to specific fields via Field Level Security (FLS). Safely, on the other hand, is dedicated to wrapping DML methods that enforce user FLS and Crud Checks. Safely, in part, relies on parts of CanTheUser, so these are shipped together.
 
 > CanTheUser/Safely is a library extraction from [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
 
@@ -40,19 +40,19 @@ CanTheUser is designed to be intuitive and easy to read and use. At a high level
 
 Check for CREATE permission on Account
 
-`new CanTheUser().create(new Account());`
+`CanTheUser.create(new Account());`
 
 or
 
-`new CanTheUser().create(accountList);`
+`CanTheUser.create(accountList);`
 
 Check for READ permission on the Account object
 
-`new CanTheUser().read(new Account());`
+`CanTheUser.read(new Account());`
 
 or
 
-`new CanTheUser().read(accountList);`
+`CanTheUser.read(accountList);`
 
 Check for EDIT permissions on the Contact object
 
@@ -72,7 +72,21 @@ or
 
 #### FLS Checks
 
-FLS checks are based on Object, Field and an FLSType enum - with values 
+FLS checks are based on a given Object, Field and a calling-method-name implied FLSType enum - with values of `Accessible` and `Updatable`
+
+For instance, to check if the current user has access to update the `TradeStyle` field on the Account object, you'd call
+
+`CanTheUser.flsUpdatable('Account', 'TradeStyle');`
+
+Likewise, to check for accessibility use:
+
+`CanTheUser.flsAccessible('Account', 'TradeStyle');`
+
+
+### Safely Examples
+Like CanTheUser, Safely is intended to be clear, succinct and largely self-documenting through intuitive method names. It utilizes a Fluent interface, that allow you to define the behavior of Safely inline with your DML. Examples:
+
+
 ## Acknowledgements
 
 - [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
