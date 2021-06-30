@@ -19,7 +19,7 @@ public with sharing class CanTheUser {
         READ,
         EDIT,
         DEL,
-		UPS
+        UPS
     }
 
     public enum FLSType {
@@ -65,17 +65,18 @@ public with sharing class CanTheUser {
             when DEL {
                 return obj.getSObjectType().getDescribe().isDeletable();
             }
-			when UPS {
-				return obj.getSObjectType().getDescribe().isCreateable() && obj.getSObjectType().getDescribe().isUpdateable();
-			}
-			when else {
-				// impossible, but required to return something
-				return false;
-			}
+            when UPS {
+                return obj.getSObjectType().getDescribe().isCreateable() &&
+                    obj.getSObjectType().getDescribe().isUpdateable();
+            }
+            when else {
+                // impossible, but required to return something
+                return false;
+            }
         }
     }
 
-	public static Boolean crud(List<SObject> objs, CrudType permission) {
+    public static Boolean crud(List<SObject> objs, CrudType permission) {
         return crud(objs?.get(0), permission);
     }
 
@@ -148,7 +149,7 @@ public with sharing class CanTheUser {
         return crud(objs?.get(0), CrudType.EDIT);
     }
 
-	/**
+    /**
      * @description convenience api for determining if the running user can
      * upsert (insert and update) the specified objects
      * @param obj object type to check edit permissions on
@@ -159,7 +160,7 @@ public with sharing class CanTheUser {
         return crud(obj, CrudType.UPS);
     }
 
-	public static Boolean ups(List<SObject> objs) {
+    public static Boolean ups(List<SObject> objs) {
         return crud(objs?.get(0), CrudType.UPS);
     }
 
@@ -271,7 +272,9 @@ public with sharing class CanTheUser {
      * @param objType String name of the object type
      * @return        `Map<String, Map<FLSType, Boolean>>`
      */
-    private static Map<String, Map<FLSType, Boolean>> calculateFLS(String objType) {
+    private static Map<String, Map<FLSType, Boolean>> calculateFLS(
+        String objType
+    ) {
         Schema.DescribeSObjectResult[] descResult = Schema.describeSObjects(
             new List<String>{ objType }
         );

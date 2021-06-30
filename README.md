@@ -1,10 +1,8 @@
-
 # CanTheUser / Safely
 
 CanTheUser/Safely is a delightful and elegant way to handle CRUD and FLS Checks. It comes in two parts: CanTheUser, and Safely. CanTheUser is focused on determining if a user can do a given CRUD operation, and whether or not the user has access to specific fields via Field Level Security (FLS). Safely, on the other hand, is dedicated to wrapping DML methods that enforce user FLS and Crud Checks. Safely, in part, relies on parts of CanTheUser, so these are shipped together.
 
 > CanTheUser/Safely is a library extraction from [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
-
 
 ## Badges
 
@@ -12,6 +10,7 @@ CanTheUser/Safely is a delightful and elegant way to handle CRUD and FLS Checks.
 [![CI Workflow](https://github.com/codefriar/CanTheUser/workflows/CI/badge.svg)](_https://github.com/codefriar/CanTheUser/actions?query=workflow%3ACI_)
 [![Packaging Workflow](https://github.com/codefriar/CanTheUser/workflows/Packaging/badge.svg)](_https://github.com/codefriar/CanTheUser/actions?query=workflow%3APackaging_) [![codecov](https://codecov.io/gh/codefriar/CanTheUser/branch/main/graph/badge.svg)](_https://codecov.io/gh/codefriar/CanTheUser_)
 [![Twitter](https://img.shields.io/twitter/follow/Codefriar.svg?style=social)](https://img.shields.io/twitter/follow/Codefriar.svg?style=social)
+
 ## Contributing
 
 Contributions are always welcome!
@@ -20,15 +19,14 @@ See [`contributing.md`](https://github.com/codefriar/CanTheUser/blob/main/CONTRI
 
 Please adhere to this project's [`code of conduct`](https://github.com/codefriar/CanTheUser/blob/main/CODE_OF_CONDUCT.md).
 
-  
 ## Installation
 
 To install or deploy CanTheUser/Safely you have three options:
 
-1. SPM Install: This is the preferred method, [but it requires SPM. Find out more here.](https://spm-registry.herokuapp.com/) 
-``` sfdx spm:install -n 'CanTheUser' ```
+1. SPM Install: This is the preferred method, [but it requires SPM. Find out more here.](https://spm-registry.herokuapp.com/)
+   `sfdx spm:install -n 'CanTheUser'`
 1. Package Link: Click [this link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5e000000tprvAAA) to install the CanTheUser/Safely unlocked package in your org.
-2. Git Clone: This is an exercise left to the reader.
+1. Git Clone: This is an exercise left to the reader.
 
 ## Usage/Examples
 
@@ -82,11 +80,10 @@ Likewise, to check for accessibility use:
 
 `CanTheUser.flsAccessible('Account', 'TradeStyle');`
 
-
 ### Safely Examples
-Like CanTheUser, Safely is intended to be clear, succinct and largely self-documenting through intuitive method names. It utilizes a Fluent interface, that allow you to define the behavior of Safely inline with your DML. Examples:
 
+Like CanTheUser, Safely is intended to be clear, succinct and largely self-documenting through intuitive method names. It utilizes a Fluent interface, that allow you to define the behavior of Safely inline with your DML. Examples:
 
 ## Acknowledgements
 
-- [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)
+-   [Apex Recipes](https://www.github.com/trailheadapps/apex-recipes)

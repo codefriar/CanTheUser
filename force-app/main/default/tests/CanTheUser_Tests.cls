@@ -138,7 +138,10 @@ private class CanTheUser_Tests {
     @isTest
     static void getBulkFLSAccessibleWithAccountPositive() {
         Set<String> fields = new Set<String>{ 'name', 'id' };
-        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSAccessible('Account', fields);
+        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSAccessible(
+            'Account',
+            fields
+        );
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
@@ -150,7 +153,10 @@ private class CanTheUser_Tests {
     @isTest
     static void getBulkFLSAccessibleWithAccountPositiveWithNegativeResults() {
         Set<String> fields = new Set<String>{ 'name', 'nonExistingField__c' };
-        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSAccessible('Account', fields);
+        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSAccessible(
+            'Account',
+            fields
+        );
 
         System.assert(
             bulkCheck.get('name'),
@@ -166,7 +172,10 @@ private class CanTheUser_Tests {
     @isTest
     static void getBulkFLSUpdatableWithAccountPositive() {
         Set<String> fields = new Set<String>{ 'name', 'ShippingStreet' };
-        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSUpdatable('Account', fields);
+        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSUpdatable(
+            'Account',
+            fields
+        );
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
@@ -178,7 +187,10 @@ private class CanTheUser_Tests {
     @isTest
     static void getBulkFLSUpdatableWithAccountPositiveWithNegativeResults() {
         Set<String> fields = new Set<String>{ 'name', 'nonExistingField__c' };
-        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSUpdatable('Account', fields);
+        Map<String, Boolean> bulkCheck = CanTheUser.bulkFLSUpdatable(
+            'Account',
+            fields
+        );
 
         System.assert(
             bulkCheck.get('name'),

@@ -22,10 +22,10 @@ public with sharing class Safely {
 
     /// Insert
     public List<Database.SaveResult> doInsert(List<SObject> records) {
-		if (CanTheUser.create(records)) {
-        	return doDML(System.AccessType.CREATABLE, records);
-		}
-		return new List<Database.SaveResult>();
+        if (CanTheUser.create(records)) {
+            return doDML(System.AccessType.CREATABLE, records);
+        }
+        return new List<Database.SaveResult>();
     }
 
     public List<Database.SaveResult> doInsert(SObject record) {
@@ -34,10 +34,10 @@ public with sharing class Safely {
 
     /// Update
     public List<Database.SaveResult> doUpdate(List<SObject> records) {
-		if (CanTheUser.edit(records)) {
-        	return doDML(System.AccessType.UPDATABLE, records);
-		}
-		return new List<Database.SaveResult>();
+        if (CanTheUser.edit(records)) {
+            return doDML(System.AccessType.UPDATABLE, records);
+        }
+        return new List<Database.SaveResult>();
     }
 
     public List<Database.SaveResult> doUpdate(SObject record) {
@@ -46,18 +46,18 @@ public with sharing class Safely {
 
     /// Upsert
     public List<Database.UpsertResult> doUpsert(List<SObject> records) {
-		if (CanTheUser.edit(records) && CanTheUser.create(records)) {
-			SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
-				AccessType.UPSERTABLE,
-				records
-			);
+        if (CanTheUser.edit(records) && CanTheUser.create(records)) {
+            SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
+                AccessType.UPSERTABLE,
+                records
+            );
 
-			return Database.upsert(
-				securityDecision.getRecords(),
-				this.allOrNothing
-			);
-		}
-		return new List<Database.UpsertResult>();
+            return Database.upsert(
+                securityDecision.getRecords(),
+                this.allOrNothing
+            );
+        }
+        return new List<Database.UpsertResult>();
     }
 
     public List<Database.UpsertResult> doUpsert(Sobject record) {
@@ -83,9 +83,9 @@ public with sharing class Safely {
             AccessType.READABLE,
             records
         );
-		// Note: We can never reach throwing this error because it will already be thrown
-		// in guardAgainstRemovedFields, since if a field is not readable, it is not
-		// updateable either.
+        // Note: We can never reach throwing this error because it will already be thrown
+        // in guardAgainstRemovedFields, since if a field is not readable, it is not
+        // updateable either.
         /* Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
         if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
             throw new RemovedFieldsException(
@@ -119,12 +119,11 @@ public with sharing class Safely {
                     this.allOrNothing
                 );
             }
-			// impossible, but required by compiler
-			when else {
-				return new List<Database.SaveResult>();
-			}
+            // impossible, but required by compiler
+            when else {
+                return new List<Database.SaveResult>();
+            }
         }
-
     }
 
     private SObjectAccessDecision guardAgainstRemovedFields(

@@ -15,7 +15,6 @@
         "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
         "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
         "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
-        "postinstall": "node bin/check-version.js && husky install",
         "precommit": "npm run apex:local:start & sleep 2 && npm run apexdocs && npm run prettier:apex:local && npm run apex:local:stop"
     },
     "author": "salesforce.com",
