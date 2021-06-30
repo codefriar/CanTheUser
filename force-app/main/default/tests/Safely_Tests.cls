@@ -1,6 +1,6 @@
-@isTest
+@IsTest
 private class Safely_Tests {
-    @isTest
+    @IsTest
     static void testConstructorChains() {
         Test.startTest();
         Safely instanceOne = new Safely().allOrNothing();
@@ -29,7 +29,7 @@ private class Safely_Tests {
         );
     }
 
-    @isTest
+    @IsTest
     static void testDoInsertMethodsNoThrowPositive() {
         Account account = (Account) new Account(Name = 'TestAccount');
         Test.startTest();
@@ -43,8 +43,8 @@ private class Safely_Tests {
         System.assert(results.get(0).success, 'This dml should succeed');
     }
 
-    @isTest
-    static Void testDoInsertNegative() {
+    @IsTest
+    static void testDoInsertNegative() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
 
         System.runAs(minAccessUser) {
@@ -61,8 +61,8 @@ private class Safely_Tests {
         }
     }
 
-    @isTest
-    static Void testMarketingProfileGeneratesInsertExceptionPositive() {
+    @IsTest
+    static void testMarketingProfileGeneratesInsertExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
         Account account = (Account) new Account(
@@ -89,8 +89,8 @@ private class Safely_Tests {
         );
     }
 
-    @isTest
-    static Void testDoUpdateMethodsNoThrowPositive() {
+    @IsTest
+    static void testDoUpdateMethodsNoThrowPositive() {
         Account account = (Account) new Account(Name = 'TestAccount');
         insert account;
         account.Name = 'TestAccount2';
@@ -105,8 +105,8 @@ private class Safely_Tests {
         System.assert(results.get(0).success, 'This dml should succeed');
     }
 
-    @isTest
-    static Void testDoUpdateNegative() {
+    @IsTest
+    static void testDoUpdateNegative() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
 
         PermissionSet ps = new PermissionSet(
@@ -146,8 +146,8 @@ private class Safely_Tests {
         }
     }
 
-    @isTest
-    static Void testMarketingProfileDeleteNegative() {
+    @IsTest
+    static void testMarketingProfileDeleteNegative() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Case c = (Case) new Case(Subject = 'TestCase');
         insert c;
@@ -165,8 +165,8 @@ private class Safely_Tests {
         }
     }
 
-    @isTest
-    static Void testMarketingProfileGeneratesUpdateExceptionPositive() {
+    @IsTest
+    static void testMarketingProfileGeneratesUpdateExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
         Account account = (Account) new Account(Name = 'TestAccount');
@@ -192,8 +192,8 @@ private class Safely_Tests {
         );
     }
 
-    @isTest
-    static Void testDoUpsertMethodsNoThrowPositive() {
+    @IsTest
+    static void testDoUpsertMethodsNoThrowPositive() {
         Account account = (Account) new Account(Name = 'TestAccount');
         insert account;
         account.Name = 'TestAccount2';
@@ -226,8 +226,8 @@ private class Safely_Tests {
         System.assertEquals(1, inserted, 'Expected one to have been inserted');
     }
 
-    @isTest
-    static Void testDoUpsertMethodsNegative() {
+    @IsTest
+    static void testDoUpsertMethodsNegative() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
 
         PermissionSet ps = new PermissionSet(
@@ -274,8 +274,8 @@ private class Safely_Tests {
         }
     }
 
-    @isTest
-    static Void testMarketingProfileGeneratesUpsertExceptionPositive() {
+    @IsTest
+    static void testMarketingProfileGeneratesUpsertExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
         Account account = (Account) new Account(Name = 'TestAccount');
@@ -301,8 +301,8 @@ private class Safely_Tests {
         );
     }
 
-    @isTest
-    static Void testDeleteWithRegularProfilePositive() {
+    @IsTest
+    static void testDeleteWithRegularProfilePositive() {
         Account account = (Account) new Account(Name = 'TestAccount');
         insert account;
         Test.startTest();
@@ -313,8 +313,8 @@ private class Safely_Tests {
         System.assert(results.get(0).success, 'expected this dml to succeed');
     }
 
-    @isTest
-    static Void testDeleteWithRegularProfileNegative() {
+    @IsTest
+    static void testDeleteWithRegularProfileNegative() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
         Account account = (Account) new Account(Name = 'TestAccount');
         insert account;
@@ -328,8 +328,8 @@ private class Safely_Tests {
         System.assert(results.isEmpty(), 'expected this dml to fail');
     }
 
-    @isTest
-    static Void testDoQueryPositive() {
+    @IsTest
+    static void testDoQueryPositive() {
         Account account = (Account) new Account(Name = 'TestAccount');
         insert account;
         Test.startTest();
@@ -340,8 +340,8 @@ private class Safely_Tests {
         System.assertEquals(1, Accounts.size(), 'expected to find one record');
     }
 
-    @isTest
-    static Void testDoQueryThrowsRemovedFieldsException() {
+    @IsTest
+    static void testDoQueryThrowsRemovedFieldsException() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
 
         PermissionSet ps = new PermissionSet(
