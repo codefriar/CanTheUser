@@ -83,16 +83,6 @@ public with sharing class Safely {
             AccessType.READABLE,
             records
         );
-        // Note: We can never reach throwing this error because it will already be thrown
-        // in guardAgainstRemovedFields, since if a field is not readable, it is not
-        // updateable either.
-        /* Map<String, Set<String>> removedFields = securityDecision.getRemovedFields();
-        if (this.throwIfRemovedFields && !removedFields.isEmpty()) {
-            throw new RemovedFieldsException(
-                'ThrowIfRemovedFields is enabled and the following fields were removed: ' +
-                removedFields
-            );
-        } */
         return securityDecision.getRecords();
     }
 
