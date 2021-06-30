@@ -1,12 +1,18 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "CanTheuser",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "CanTheUser",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "CanTheuser": "0Ho5e0000004CYICA2"
     }
-  ],
-  "name": "CanTheUser",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0"
 }
