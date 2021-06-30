@@ -51,7 +51,8 @@ public with sharing class CanTheUser {
      * @example
      * System.debug(new CanTheUser().crud(new Account(), CanTheUser.CrudType.READ));
      **/
-    public static Boolean crud(SObject obj, CrudType permission) {
+    @testVisible
+    private static Boolean crud(SObject obj, CrudType permission) {
         switch on permission {
             when CREATE {
                 return obj.getSObjectType().getDescribe().isCreateable();
