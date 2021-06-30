@@ -82,7 +82,28 @@ Likewise, to check for accessibility use:
 
 ### Safely Examples
 
-Like CanTheUser, Safely is intended to be clear, succinct and largely self-documenting through intuitive method names. It utilizes a Fluent interface, that allow you to define the behavior of Safely inline with your DML. Examples:
+Like CanTheUser, Safely is intended to be clear, succinct and largely self-documenting through intuitive method names. It utilizes a Fluent interface, that allow you to define the behavior of Safely inline with your DML. Beyond the constructor, there are currently two fluent methods to enable options:
+
+- `.allOrNothing()` - When called, this sets allOrNone flag on the underlying Database.* calls Safely makes.
+- `.throwIfRemovedFields()` - When called, this causes Safely to throw a `RemovedFieldsException` whenever the SObjectAccessDecision calculation indicates that fields were removed. If this method is not called, the records, and fields permitted by the SObjectAccessDecision are passed to the indicated Database.* call. 
+
+> Note: Safely *fails safe* - meaning that there is no way to invoke it's DML methods in a way where CRUD and FLS are not enforced.
+
+To safely insert, with AllOrNothing set, throwing if there are removed fields:
+`new Safely().allOrNothing().throwIfRemovedFields().doInsert(List<sObject>);`
+
+To safely insert, removing fields the user has no access to:
+`new Safely().doInsert(List<sObject>);`
+
+To safely update, with AllOrNothing set, throwing if there are removed fields
+`new Safely().allOrNothing().throwIfRemovedFields().doUpdate(List<sObjects>);`
+
+To safely update, removing fields the user has no access to:
+`new Safely().doUpdate(List<sObjects>);`
+
+Likewise, you can call `doDelete`, `doUpsert` similarly. 
+
+Finally, you can execute SOQL / SOSL queries by calling `new Safely().doQuery(queryString)`
 
 ## Acknowledgements
 
