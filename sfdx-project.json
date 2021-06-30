@@ -3,7 +3,7 @@
         {
             "path": "force-app",
             "default": true,
-            "package": "CanTheuser",
+            "package": "CanTheUser",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         }
@@ -13,6 +13,6 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "51.0",
     "packageAliases": {
-        "CanTheuser": "0Ho5e0000004CYICA2"
+        "CanTheUser": "0Ho5e0000004CYICA2"
     }
 }
