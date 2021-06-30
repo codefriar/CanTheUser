@@ -10,7 +10,7 @@ private class Safely_Tests {
         System.assertEquals(
             true,
             instanceOne.allOrNothing,
-            'Expected fluid constructor to have set this to true'
+            'Expected Fluent constructor to have set this to true'
         );
         System.assertEquals(
             false,
@@ -20,7 +20,7 @@ private class Safely_Tests {
         System.assertEquals(
             true,
             instanceTwo.throwIfRemovedFields,
-            'Expected fluid constructor to have set this to true'
+            'Expected Fluent constructor to have set this to true'
         );
         System.assertEquals(
             false,
