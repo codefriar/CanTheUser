@@ -1,5 +1,4 @@
-@isTest
-public with sharing class TestUtils {
+public with sharing class ApexRecipes_TestUtils {
     public static User createMinAccessUser(Boolean doInsert) {
         Id profileId = [
             SELECT Id
