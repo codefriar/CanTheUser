@@ -169,7 +169,9 @@ private class CanTheUser_Tests {
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
-                'Expected the field ' + field + ' to be accesible on Account'
+                'Expected the field ' +
+                field +
+                ' to be accesible on Account'
             );
         }
     }
@@ -189,7 +191,8 @@ private class CanTheUser_Tests {
 
         System.assert(
             !bulkCheck.get('nonExistingField__c'),
-            'Expected the nonExistingField__c ' + 'field not to be accesible on Account'
+            'Expected the nonExistingField__c ' +
+            'field not to be accesible on Account'
         );
     }
 
@@ -203,7 +206,9 @@ private class CanTheUser_Tests {
         for (String field : bulkCheck.keySet()) {
             System.assert(
                 bulkCheck.get(field),
-                'Expected the field ' + field + ' to be accesible on Account'
+                'Expected the field ' +
+                field +
+                ' to be accesible on Account'
             );
         }
     }
@@ -223,7 +228,8 @@ private class CanTheUser_Tests {
 
         System.assert(
             !bulkCheck.get('nonExistingField__c'),
-            'Expected the nonExistingField__c ' + 'field not to be accesible on Account'
+            'Expected the nonExistingField__c ' +
+            'field not to be accesible on Account'
         );
     }
 }
