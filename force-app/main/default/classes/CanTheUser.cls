@@ -77,9 +77,17 @@ public with sharing class CanTheUser {
         }
     }
 
-	public static Boolean crud(List<SObject> objs, CrudType permission) {
+	@testVisible
+	private static Boolean crud(List<SObject> objs, CrudType permission) {
         return crud(objs?.get(0), permission);
     }
+
+	@testVisible
+	private static Boolean crud(String objectName, CrudType permission) {
+		Type t = Type.forName(objectName);
+		SObject p = (SObject) JSON.deserialize('{}', t);
+		return crud(p, permission);
+	}
 
     /**
      * @description convenience api for determining if the running user can
@@ -102,6 +110,18 @@ public with sharing class CanTheUser {
      */
     public static Boolean create(List<SObject> objs) {
         return crud(objs?.get(0), CrudType.CREATE);
+    }
+
+	/**
+     * @description convenience api for determining if the running user can
+     * create the specified object
+     * @param String Object type to check create permissions on
+     * @return Boolean
+     * @example
+     * System.debug(CanTheUser.create('Account'));
+     **/
+    public static Boolean create(String objName) {
+        return crud(objName, CrudType.CREATE);
     }
 
     /**
@@ -127,6 +147,18 @@ public with sharing class CanTheUser {
         return crud(objs?.get(0), CrudType.READ);
     }
 
+	/**
+     * @description convenience api for determining if the running user can
+     * read the specified object
+     * @param String Object type to check read permissions on
+     * @return Boolean
+     * @example
+     * System.debug(CanTheUser.read('Account'));
+     **/
+    public static Boolean read(String objName) {
+        return crud(objName, CrudType.READ);
+    }
+
     /**
      * @description convenience api for determining if the running user can
      * edit / update the specified object
@@ -150,6 +182,18 @@ public with sharing class CanTheUser {
         return crud(objs?.get(0), CrudType.EDIT);
     }
 
+	/**
+     * @description convenience api for determining if the running user can
+     * edit the specified object
+     * @param String Object type to check edit permissions on
+     * @return Boolean
+     * @example
+     * System.debug(CanTheUser.edit('Account'));
+     **/
+    public static Boolean edit(String objName) {
+        return crud(objName, CrudType.EDIT);
+    }
+
     /**
      * @description convenience api for determining if the running user can
      * upsert (insert and update) the specified objects
@@ -162,8 +206,27 @@ public with sharing class CanTheUser {
         return crud(obj, CrudType.UPS);
     }
 
+	/**
+     * @description convenience api for determining if the running user can
+     * edit / update the specified objects
+     * @param obj object type to check upsert permissions on
+     * @return Boolean
+     * @example
+     **/
     public static Boolean ups(List<SObject> objs) {
         return crud(objs?.get(0), CrudType.UPS);
+    }
+
+	/**
+     * @description convenience api for determining if the running user can
+     * upsert the specified object
+     * @param String Object type to check upsert permissions on
+     * @return Boolean
+     * @example
+     * System.debug(CanTheUser.ups('Account'));
+     **/
+    public static Boolean ups(String objName) {
+        return crud(objName, CrudType.UPS);
     }
 
     /**
@@ -178,8 +241,26 @@ public with sharing class CanTheUser {
         return crud(obj, CrudType.DEL);
     }
 
+	/**
+     * @description convenience api for determining if the running user can
+     * delete the specified object
+     * @param String Object type to check delete permissions on
+     * @return Boolean
+     **/
     public static Boolean destroy(List<SObject> objs) {
         return crud(objs?.get(0), CrudType.DEL);
+    }
+
+	/**
+     * @description convenience api for determining if the running user can
+     * delete the specified object
+     * @param String Object type to check create permissions on
+     * @return Boolean
+     * @example
+     * System.debug(CanTheUser.destroy('Account'));
+     **/
+    public static Boolean destroy(String objName) {
+        return crud(objName, CrudType.DEL);
     }
 
     /**

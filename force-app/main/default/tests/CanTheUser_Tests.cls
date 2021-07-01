@@ -33,6 +33,10 @@ private class CanTheUser_Tests {
             CanTheUser.create(new Account()),
             'Unless scratch org defaults have been changed by the user, this test should pass - asserting that users can create accounts'
         );
+		System.assert(
+            CanTheUser.create('Account'),
+            'Unless scratch org defaults have been changed by the user, this test should pass - asserting that users can create accounts'
+        );
     }
 
     @IsTest
@@ -55,6 +59,10 @@ private class CanTheUser_Tests {
         );
         System.assert(
             CanTheUser.read(new Account()),
+            'Expected to be able to read accounts'
+        );
+		System.assert(
+            CanTheUser.read('Account'),
             'Expected to be able to read accounts'
         );
     }
@@ -81,6 +89,10 @@ private class CanTheUser_Tests {
             CanTheUser.edit(new Account()),
             'Expected to be able to update accounts'
         );
+		System.assert(
+            CanTheUser.edit('Account'),
+            'Expected to be able to update accounts'
+        );
     }
 
     @IsTest
@@ -91,6 +103,10 @@ private class CanTheUser_Tests {
         );
         System.assert(
             CanTheUser.ups(new Account()),
+            'Expected to be able to upsert accounts'
+        );
+		System.assert(
+            CanTheUser.ups('Account'),
             'Expected to be able to upsert accounts'
         );
     }
@@ -105,6 +121,10 @@ private class CanTheUser_Tests {
             CanTheUser.crud(new Account(), CanTheUser.CrudType.DEL),
             'Expected to be able to delete accounts'
         );
+		System.assert(
+            CanTheUser.crud('Account', CanTheUser.CrudType.DEL),
+            'Expected to be able to delete accounts'
+        );
     }
 
     @IsTest
@@ -115,6 +135,10 @@ private class CanTheUser_Tests {
         );
         System.assert(
             CanTheUser.destroy(new Account()),
+            'Expected to be able to delete accounts'
+        );
+		System.assert(
+            CanTheUser.destroy('Account'),
             'Expected to be able to delete accounts'
         );
     }
