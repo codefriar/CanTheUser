@@ -386,4 +386,16 @@ private class Safely_Tests {
             );
         }
     }
+
+	@IsTest
+	static void emptyCollections(){
+
+		Test.startTest();
+		new Safely().doInsert(new List<Account>());
+		new Safely().doUpdate(new List<Account>());
+		new Safely().doUpsert(new List<Account>());
+		new Safely().doDelete(new List<Account>());
+		Test.stopTest();
+
+	}
 }
