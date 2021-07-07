@@ -386,4 +386,20 @@ private class Safely_Tests {
             );
         }
     }
+
+	@IsTest
+	static void emptyCollections(){
+
+		Test.startTest();
+		List<Database.SaveResult> insertResults = new Safely().doInsert(new List<Account>());
+		List<Database.SaveResult> updateResults = new Safely().doUpdate(new List<Account>());
+		List<Database.UpsertResult> upsertResults = new Safely().doUpsert(new List<Account>());
+		List<Database.DeleteResult> deleteResults = new Safely().doDelete(new List<Account>());
+		Test.stopTest();
+
+		System.assert(insertResults.isEmpty());
+		System.assert(updateResults.isEmpty());
+		System.assert(upsertResults.isEmpty());
+		System.assert(deleteResults.isEmpty());
+	}
 }
