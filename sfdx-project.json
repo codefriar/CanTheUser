@@ -4,8 +4,8 @@
             "path": "force-app",
             "default": true,
             "package": "CanTheUser",
-            "versionName": "ver 0.1.1",
-            "versionNumber": "0.1.1.NEXT"
+            "versionName": "ver 0.1.2",
+            "versionNumber": "0.1.2.NEXT"
         }
     ],
     "name": "CanTheUser",
@@ -15,6 +15,7 @@
     "packageAliases": {
         "CanTheUser": "0Ho5e0000004CYICA2",
         "CanTheUser@0.1.0-1": "04t5e000000uiYbAAI",
-        "CanTheUser@0.1.1-1": "04t5e000000uidDAAQ"
+        "CanTheUser@0.1.1-1": "04t5e000000uidDAAQ",
+        "CanTheUser@0.1.2-1": "04t5e000000up1pAAA"
     }
 }
