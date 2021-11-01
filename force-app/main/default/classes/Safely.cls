@@ -91,6 +91,11 @@ public with sharing class Safely {
         System.AccessType accessType,
         List<SObject> records
     ) {
+        // guard against an empty but non-null list of records.
+        if (records.isEmpty()) {
+            return new List<Database.SaveResult>();
+        }
+
         SObjectAccessDecision securityDecision = guardAgainstRemovedFields(
             accessType,
             records

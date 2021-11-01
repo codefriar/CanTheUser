@@ -14,11 +14,11 @@ private class CanTheUser_Tests {
     @IsTest
     static void canCrudAccountCreatePositive() {
         System.assert(
-            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.CREATE),
+            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.CREATEABLE),
             'Unless scratch org defaults have been changed by the user, this test should pass - asserting that users can create accounts'
         );
         System.assert(
-            CanTheUser.crud(new Account(), CanTheUser.CrudType.CREATE),
+            CanTheUser.crud(new Account(), CanTheUser.CrudType.CREATEABLE),
             'Unless scratch org defaults have been changed by the user, this test should pass - asserting that users can create accounts'
         );
     }
@@ -42,11 +42,11 @@ private class CanTheUser_Tests {
     @IsTest
     static void canCrudAccountReadPositive() {
         System.assert(
-            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.READ),
+            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.READABLE),
             'Expected to be able to read accounts'
         );
         System.assert(
-            CanTheUser.crud(new Account(), CanTheUser.CrudType.READ),
+            CanTheUser.crud(new Account(), CanTheUser.CrudType.READABLE),
             'Expected to be able to read accounts'
         );
     }
@@ -70,11 +70,11 @@ private class CanTheUser_Tests {
     @IsTest
     static void canCrudAccountUpdatePositive() {
         System.assert(
-            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.EDIT),
+            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.EDITABLE),
             'Expected to be able to update accounts'
         );
         System.assert(
-            CanTheUser.crud(new Account(), CanTheUser.CrudType.EDIT),
+            CanTheUser.crud(new Account(), CanTheUser.CrudType.EDITABLE),
             'Expected to be able to update accounts'
         );
     }
@@ -114,15 +114,15 @@ private class CanTheUser_Tests {
     @IsTest
     static void canCrudAccountDeletePositive() {
         System.assert(
-            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.DEL),
+            CanTheUser.crud(generateAccounts(), CanTheUser.CrudType.DELETABLE),
             'Expected to be able to delete accounts'
         );
         System.assert(
-            CanTheUser.crud(new Account(), CanTheUser.CrudType.DEL),
+            CanTheUser.crud(new Account(), CanTheUser.CrudType.DELETABLE),
             'Expected to be able to delete accounts'
         );
         System.assert(
-            CanTheUser.crud('Account', CanTheUser.CrudType.DEL),
+            CanTheUser.crud('Account', CanTheUser.CrudType.DELETABLE),
             'Expected to be able to delete accounts'
         );
     }

@@ -15,11 +15,11 @@ public with sharing class CanTheUser {
     private static Map<String, Set<String>> updatableFieldsByObject = new Map<String, Set<String>>();
 
     public enum CrudType {
-        CREATE,
-        READ,
-        EDIT,
-        DEL,
-        UPS
+        CREATEABLE,
+        READABLE,
+        EDITABLE,
+        DELETABLE,
+        UPSERTABLE
     }
 
     public enum FLSType {
@@ -49,24 +49,24 @@ public with sharing class CanTheUser {
      * @param permission create, read, update or delete
      * @return Boolean
      * @example
-     * System.debug(CanTheUser.crud(new Account(), CanTheUser.CrudType.READ));
+     * System.debug(CanTheUser.crud(new Account(), CanTheUser.CrudType.READABLE));
      **/
     @testVisible
     private static Boolean crud(SObject obj, CrudType permission) {
         switch on permission {
-            when CREATE {
+            when CREATEABLE {
                 return obj.getSObjectType().getDescribe().isCreateable();
             }
-            when READ {
+            when READABLE {
                 return obj.getSObjectType().getDescribe().isAccessible();
             }
-            when EDIT {
+            when EDITABLE {
                 return obj.getSObjectType().getDescribe().isUpdateable();
             }
-            when DEL {
+            when DELETABLE {
                 return obj.getSObjectType().getDescribe().isDeletable();
             }
-            when UPS {
+            when UPSERTABLE {
                 return obj.getSObjectType().getDescribe().isCreateable() &&
                     obj.getSObjectType().getDescribe().isUpdateable();
             }
@@ -98,7 +98,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.create(new Account()));
      **/
     public static Boolean create(SObject obj) {
-        return crud(obj, CrudType.CREATE);
+        return crud(obj, CrudType.CREATEABLE);
     }
 
     /**
@@ -109,7 +109,7 @@ public with sharing class CanTheUser {
      * @return Boolean
      */
     public static Boolean create(List<SObject> objs) {
-        return crud(objs?.get(0), CrudType.CREATE);
+        return crud(objs?.get(0), CrudType.CREATEABLE);
     }
 
     /**
@@ -121,7 +121,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.create('Account'));
      **/
     public static Boolean create(String objName) {
-        return crud(objName, CrudType.CREATE);
+        return crud(objName, CrudType.CREATEABLE);
     }
 
     /**
@@ -133,7 +133,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.read(new Account()));
      **/
     public static Boolean read(SObject obj) {
-        return crud(obj, CrudType.READ);
+        return crud(obj, CrudType.READABLE);
     }
 
     /**
@@ -144,7 +144,7 @@ public with sharing class CanTheUser {
      * @example
      **/
     public static Boolean read(List<SObject> objs) {
-        return crud(objs?.get(0), CrudType.READ);
+        return crud(objs?.get(0), CrudType.READABLE);
     }
 
     /**
@@ -156,7 +156,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.read('Account'));
      **/
     public static Boolean read(String objName) {
-        return crud(objName, CrudType.READ);
+        return crud(objName, CrudType.READABLE);
     }
 
     /**
@@ -168,7 +168,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.edit(new Account()));
      **/
     public static Boolean edit(SObject obj) {
-        return crud(obj, CrudType.EDIT);
+        return crud(obj, CrudType.EDITABLE);
     }
 
     /**
@@ -179,7 +179,7 @@ public with sharing class CanTheUser {
      * @example
      **/
     public static Boolean edit(List<SObject> objs) {
-        return crud(objs?.get(0), CrudType.EDIT);
+        return crud(objs?.get(0), CrudType.EDITABLE);
     }
 
     /**
@@ -191,7 +191,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.edit('Account'));
      **/
     public static Boolean edit(String objName) {
-        return crud(objName, CrudType.EDIT);
+        return crud(objName, CrudType.EDITABLE);
     }
 
     /**
@@ -203,7 +203,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.ups(new Account()));
      **/
     public static Boolean ups(SObject obj) {
-        return crud(obj, CrudType.UPS);
+        return crud(obj, CrudType.UPSERTABLE);
     }
 
     /**
@@ -214,7 +214,7 @@ public with sharing class CanTheUser {
      * @example
      **/
     public static Boolean ups(List<SObject> objs) {
-        return crud(objs?.get(0), CrudType.UPS);
+        return crud(objs?.get(0), CrudType.UPSERTABLE);
     }
 
     /**
@@ -226,7 +226,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.ups('Account'));
      **/
     public static Boolean ups(String objName) {
-        return crud(objName, CrudType.UPS);
+        return crud(objName, CrudType.UPSERTABLE);
     }
 
     /**
@@ -238,7 +238,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.destroy(new Account()));
      **/
     public static Boolean destroy(SObject obj) {
-        return crud(obj, CrudType.DEL);
+        return crud(obj, CrudType.DELETABLE);
     }
 
     /**
@@ -248,7 +248,7 @@ public with sharing class CanTheUser {
      * @return Boolean
      **/
     public static Boolean destroy(List<SObject> objs) {
-        return crud(objs?.get(0), CrudType.DEL);
+        return crud(objs?.get(0), CrudType.DELETABLE);
     }
 
     /**
@@ -260,7 +260,7 @@ public with sharing class CanTheUser {
      * System.debug(CanTheUser.destroy('Account'));
      **/
     public static Boolean destroy(String objName) {
-        return crud(objName, CrudType.DEL);
+        return crud(objName, CrudType.DELETABLE);
     }
 
     /**
