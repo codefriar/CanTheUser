@@ -28,7 +28,7 @@
         "npm": ">= 6.5.0"
     },
     "devDependencies": {
-        "@cparra/apexdocs": "^1.13.6",
+        "@cparra/apexdocs": "^1.14.0",
         "@sa11y/jest": "^3.0.1",
         "@prettier/plugin-xml": "^1.1.0",
         "@salesforce/eslint-config-lwc": "^0.11.0",
