@@ -5,7 +5,7 @@ public with sharing class ApexRecipes_TestUtils {
         return createTestUser(profileId, doInsert);
     }
 
-    public static User createMarketingUser(Boolean doInsert) {
+    public static User createStandardUser(Boolean doInsert) {
         Profile prof = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
         Id profileId = prof.Id;
         return createTestUser(profileId, doInsert);

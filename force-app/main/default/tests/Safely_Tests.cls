@@ -39,7 +39,7 @@ private class Safely_Tests {
 
     @IsTest
     private static void testMarketingProfileGeneratesInsertExceptionPositive() {
-        User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
+        User marketingUser = ApexRecipes_TestUtils.createStandardUser(true);
         Boolean didCatchTheRightException = false;
         Contact con = (Contact) new Contact(LastName = 'TestContact', DoNotCall = true);
         Test.startTest();
@@ -98,7 +98,7 @@ private class Safely_Tests {
 
     @IsTest
     private static void testMarketingProfileDeleteNegative() {
-        User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
+        User marketingUser = ApexRecipes_TestUtils.createStandardUser(true);
         Case c = (Case) new Case(Subject = 'TestCase');
         insert c;
 
@@ -113,7 +113,7 @@ private class Safely_Tests {
 
     @IsTest
     private static void testMarketingProfileGeneratesUpdateExceptionPositive() {
-        User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
+        User marketingUser = ApexRecipes_TestUtils.createStandardUser(true);
         Boolean didCatchTheRightException = false;
         Contact con = (Contact) new Contact(LastName = 'TestContact');
         insert con;
@@ -192,7 +192,7 @@ private class Safely_Tests {
 
     @IsTest
     private static void testMarketingProfileGeneratesUpsertExceptionPositive() {
-        User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
+        User marketingUser = ApexRecipes_TestUtils.createStandardUser(true);
         Boolean didCatchTheRightException = false;
         Contact con = (Contact) new Contact(LastName = 'TestContact');
         insert con;
