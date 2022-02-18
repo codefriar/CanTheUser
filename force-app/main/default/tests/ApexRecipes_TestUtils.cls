@@ -1,11 +1,13 @@
 public with sharing class ApexRecipes_TestUtils {
     public static User createMinAccessUser(Boolean doInsert) {
-        Id profileId = [SELECT Id FROM Profile WHERE Name = 'Minimum Access - Salesforce'].Id;
+        Profile prof = [SELECT Id FROM Profile WHERE Name = 'Minimum Access - Salesforce'];
+        Id profileId = prof.Id;
         return createTestUser(profileId, doInsert);
     }
 
     public static User createMarketingUser(Boolean doInsert) {
-        Id profileId = [SELECT Id FROM Profile WHERE Name = 'Marketing User'].Id;
+        Profile prof = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
+        Id profileId = prof.Id;
         return createTestUser(profileId, doInsert);
     }
 
