@@ -15,9 +15,9 @@ private class Safely_Tests {
 
     @IsTest
     private static void testDoInsertMethodsNoThrowPositive() {
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
         Test.startTest();
-        List<Database.SaveResult> results = new Safely().doInsert(cntct);
+        List<Database.SaveResult> results = new Safely().doInsert(con);
         Test.stopTest();
         System.assertEquals(1, results.size(), 'Expected one save result in the list');
         System.assert(results.get(0).success, 'This dml should succeed');
@@ -30,8 +30,8 @@ private class Safely_Tests {
         System.runAs(minAccessUser) {
             System.assert(!CanTheUser.create(new Contact()));
             Test.startTest();
-            Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-            List<Database.SaveResult> results = new Safely().doInsert(cntct);
+            Contact con = (Contact) new Contact(LastName = 'TestContact');
+            List<Database.SaveResult> results = new Safely().doInsert(con);
             Test.stopTest();
             System.assertEquals(0, results.size(), 'Expected zero delete result in the list');
         }
@@ -41,11 +41,11 @@ private class Safely_Tests {
     private static void testMarketingProfileGeneratesInsertExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact', DoNotCall = true);
+        Contact con = (Contact) new Contact(LastName = 'TestContact', DoNotCall = true);
         Test.startTest();
         System.runAs(marketingUser) {
             try {
-                new Safely().throwIfRemovedFields().doInsert(cntct);
+                new Safely().throwIfRemovedFields().doInsert(con);
             } catch (Safely.RemovedFieldsException rfe) {
                 if (rfe.getMessage().containsIgnoreCase('and the following fields')) {
                     didCatchTheRightException = true;
@@ -58,11 +58,11 @@ private class Safely_Tests {
 
     @IsTest
     private static void testDoUpdateMethodsNoThrowPositive() {
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
-        cntct.LastName = 'TestContact2';
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
+        con.LastName = 'TestContact2';
         Test.startTest();
-        List<Database.SaveResult> results = new Safely().doUpdate(cntct);
+        List<Database.SaveResult> results = new Safely().doUpdate(con);
         Test.stopTest();
         System.assertEquals(1, results.size(), 'Expected one save result in the list');
         System.assert(results.get(0).success, 'This dml should succeed');
@@ -82,14 +82,14 @@ private class Safely_Tests {
 
         insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = minAccessUser.Id);
         System.runAs(minAccessUser) {
-            Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-            System.assert(CanTheUser.create(cntct));
-            insert cntct;
+            Contact con = (Contact) new Contact(LastName = 'TestContact');
+            System.assert(CanTheUser.create(con));
+            insert con;
 
             Test.startTest();
-            cntct.LastName = 'UpdatedContact';
-            System.assert(!(CanTheUser.edit(cntct)));
-            List<Database.SaveResult> results = new Safely().doUpdate(cntct);
+            con.LastName = 'UpdatedContact';
+            System.assert(!(CanTheUser.edit(con)));
+            List<Database.SaveResult> results = new Safely().doUpdate(con);
             Test.stopTest();
 
             System.assertEquals(0, results.size(), 'Expected zero update results in the list');
@@ -115,13 +115,13 @@ private class Safely_Tests {
     private static void testMarketingProfileGeneratesUpdateExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
-        cntct.DoNotCall = true;
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
+        con.DoNotCall = true;
         Test.startTest();
         System.runAs(marketingUser) {
             try {
-                new Safely().throwIfRemovedFields().doUpdate(cntct);
+                new Safely().throwIfRemovedFields().doUpdate(con);
             } catch (Safely.RemovedFieldsException rfe) {
                 if (rfe.getMessage().containsIgnoreCase('and the following fields')) {
                     didCatchTheRightException = true;
@@ -134,13 +134,13 @@ private class Safely_Tests {
 
     @IsTest
     private static void testDoUpsertMethodsNoThrowPositive() {
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
-        cntct.LastName = 'TestContact2';
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
+        con.LastName = 'TestContact2';
         Contact account2 = (Contact) new Contact(LastName = 'TestContact');
-        List<Contact> contacts = new List<Contact>{ cntct, account2 };
+        List<Contact> contacts = new List<Contact>{ con, account2 };
         Test.startTest();
-        List<Database.upsertResult> insertResults = new Safely().doUpsert(cntct);
+        List<Database.upsertResult> insertResults = new Safely().doUpsert(con);
         List<Database.UpsertResult> mixedResults = new Safely().doUpsert(contacts);
         Test.stopTest();
         System.assertEquals(1, insertResults.size(), 'Expected one save result in the list');
@@ -175,13 +175,13 @@ private class Safely_Tests {
         insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = minAccessUser.Id);
 
         System.runAs(minAccessUser) {
-            Contact cntct = (Contact) new Contact(LastName = 'TestContact01');
+            Contact con = (Contact) new Contact(LastName = 'TestContact01');
             Contact account2 = (Contact) new Contact(LastName = 'TestContact02');
 
             Test.startTest();
-            List<Database.SaveResult> insertResults = new Safely().doInsert(cntct);
-            cntct.LastName = 'TestContact2';
-            List<Contact> contacts = new List<Contact>{ cntct, account2 };
+            List<Database.SaveResult> insertResults = new Safely().doInsert(con);
+            con.LastName = 'TestContact2';
+            List<Contact> contacts = new List<Contact>{ con, account2 };
             List<Database.UpsertResult> mixedResults = new Safely().doUpsert(contacts);
             Test.stopTest();
             System.assertEquals(1, insertResults.size(), 'Expected one save result in the list');
@@ -194,13 +194,13 @@ private class Safely_Tests {
     private static void testMarketingProfileGeneratesUpsertExceptionPositive() {
         User marketingUser = ApexRecipes_TestUtils.createMarketingUser(true);
         Boolean didCatchTheRightException = false;
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
-        cntct.DoNotCall = true;
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
+        con.DoNotCall = true;
         Test.startTest();
         System.runAs(marketingUser) {
             try {
-                new Safely().throwIfRemovedFields().doUpsert(cntct);
+                new Safely().throwIfRemovedFields().doUpsert(con);
             } catch (Safely.RemovedFieldsException rfe) {
                 if (rfe.getMessage().containsIgnoreCase('and the following fields')) {
                     didCatchTheRightException = true;
@@ -213,10 +213,10 @@ private class Safely_Tests {
 
     @IsTest
     private static void testDeleteWithRegularProfilePositive() {
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
         Test.startTest();
-        List<Database.deleteResult> results = new Safely().throwIfRemovedFields().doDelete(cntct);
+        List<Database.deleteResult> results = new Safely().throwIfRemovedFields().doDelete(con);
         Test.stopTest();
         System.assert(results.get(0).success, 'expected this dml to succeed');
     }
@@ -224,12 +224,12 @@ private class Safely_Tests {
     @IsTest
     private static void testDeleteWithRegularProfileNegative() {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
         Test.startTest();
         List<Database.deleteResult> results;
         System.runAs(minAccessUser) {
-            results = new Safely().throwIfRemovedFields().doDelete(cntct);
+            results = new Safely().throwIfRemovedFields().doDelete(con);
         }
 
         Test.stopTest();
@@ -238,10 +238,10 @@ private class Safely_Tests {
 
     @IsTest
     private static void testDoQueryPositive() {
-        Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-        insert cntct;
+        Contact con = (Contact) new Contact(LastName = 'TestContact');
+        insert con;
         Test.startTest();
-        List<Contact> contacts = (List<Contact>) new Safely().throwIfRemovedFields().doQuery('SELECT ID, Name FROM Contact');
+        List<Contact> contacts = (List<Contact>) new Safely().throwIfRemovedFields().doQuery('SELECT Id, Name FROM Contact');
         Test.stopTest();
         System.assertEquals(1, Contacts.size(), 'expected to find one record');
     }
@@ -259,8 +259,8 @@ private class Safely_Tests {
         insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = minAccessUser.Id);
 
         System.runAs(new User(Id = UserInfo.getUserId())) {
-            Contact cntct = (Contact) new Contact(LastName = 'TestContact');
-            insert cntct;
+            Contact con = (Contact) new Contact(LastName = 'TestContact');
+            insert con;
         }
         System.runAs(minAccessUser) {
             Boolean didCatchTheRightException = false;
@@ -268,7 +268,7 @@ private class Safely_Tests {
             Safely saf = new Safely();
             List<Contact> contacts;
             try {
-                contacts = (List<Contact>) saf.throwIfRemovedFields().doQuery('SELECT ID, Name, DoNotCall FROM Contact');
+                contacts = (List<Contact>) saf.throwIfRemovedFields().doQuery('SELECT Id, Name, DoNotCall FROM Contact');
             } catch (Safely.RemovedFieldsException rfe) {
                 if (rfe.getMessage().containsIgnoreCase('DoNotCall')) {
                     didCatchTheRightException = true;
