@@ -28,7 +28,7 @@ private class Safely_Tests {
         User minAccessUser = ApexRecipes_TestUtils.createMinAccessUser(true);
 
         System.runAs(minAccessUser) {
-            System.assert(!CanTheUser.create(new Contact()));
+            System.assert(!CanTheUser.create(new Contact()), 'Contact should not be available to MinAccessUser');
             Test.startTest();
             Contact con = (Contact) new Contact(LastName = 'TestContact');
             List<Database.SaveResult> results = new Safely().doInsert(con);
@@ -83,12 +83,12 @@ private class Safely_Tests {
         insert new PermissionSetAssignment(PermissionSetId = ps.Id, AssigneeId = minAccessUser.Id);
         System.runAs(minAccessUser) {
             Contact con = (Contact) new Contact(LastName = 'TestContact');
-            System.assert(CanTheUser.create(con));
+            System.assert(CanTheUser.create(con), 'Contact should be available to MinAccessUser with permission set');
             insert con;
 
             Test.startTest();
             con.LastName = 'UpdatedContact';
-            System.assert(!(CanTheUser.edit(con)));
+            System.assert(!(CanTheUser.edit(con)), 'Contact should not be available to MinAccessUser to edit with permission set');
             List<Database.SaveResult> results = new Safely().doUpdate(con);
             Test.stopTest();
 
@@ -275,7 +275,7 @@ private class Safely_Tests {
                 }
             }
             Test.stopTest();
-            System.assert(saf.throwIfRemovedFields);
+            System.assert(saf.throwIfRemovedFields, 'Contact.DoNotCall should not be available to MinAccessUser');
             System.assert(didCatchTheRightException, 'Expected to have caught a removedFieldsException');
         }
     }
