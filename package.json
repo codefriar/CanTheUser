@@ -41,6 +41,6 @@
         "semver": "^7.3.4"
     },
     "dependencies": {
-        "sfdx-cli": "^7.124.0"
+        "sfdx-cli": "^7.148.3"
     }
 }
