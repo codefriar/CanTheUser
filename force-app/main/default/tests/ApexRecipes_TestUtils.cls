@@ -10,11 +10,7 @@ public with sharing class ApexRecipes_TestUtils {
     }
 
     public static User createMarketingUser(Boolean doInsert) {
-        Id profileId = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'Custom: Marketing Profile'
-        ]
+        Id profileId = [SELECT Id FROM Profile WHERE Name = 'Marketing User']
         .Id;
         return createTestUser(profileId, doInsert);
     }
