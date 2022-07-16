@@ -1,46 +1,44 @@
 {
-  "name": "can-the-user",
-  "private": true,
-  "version": "1.0.0",
-  "description": "Can the user and Safely are libraries for verifying user CRUD and FLS permissions, as well as executing all DML in a safe, FLS and CRUD respecting way.",
-  "scripts": {
-    "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-    "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-    "prettier:apex:local": "npm run apex:local:start & sleep 2 && prettier --apex-standalone-parser built-in --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\" && npm run apex:local:stop",
-    "prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-    "apexdocs": "apexdocs-generate -c apexDocsConfig.json -o false -p global public private protected namespaceaccessible -s force-app/main/default/classes && rm docs/index.md",
-    "apex:local:start": "node node_modules/prettier-plugin-apex/bin/start-apex-server.js",
-    "apex:local:stop": "node node_modules/prettier-plugin-apex/bin/stop-apex-server.js",
-    "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
-    "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
-    "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
-    "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
-    "precommit": "npm run apex:local:start & sleep 2 && npm run apexdocs && npm run prettier:apex:local && npm run apex:local:stop"
-  },
-  "author": "Kevin Poorman",
-  "license": "CC0-1.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/codefriar/cantheuser"
-  },
-  "engines": {
-    "node": ">= 10.13.0",
-    "npm": ">= 6.5.0"
-  },
-  "devDependencies": {
-    "@cparra/apexdocs": "^2.3.0",
-    "@sa11y/jest": "^3.1.0",
-    "@prettier/plugin-xml": "^2.2.0",
-    "@salesforce/eslint-config-lwc": "^0.11.0",
-    "@salesforce/sfdx-lwc-jest": "^1.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.5.0",
-    "husky": "^8.0.1",
-    "prettier": "^2.6.2",
-    "prettier-plugin-apex": "^1.10.0",
-    "semver": "^7.3.7"
-  },
-  "dependencies": {
-    "sfdx-cli": "^7.152.0"
-  }
+    "name": "can-the-user",
+    "private": true,
+    "version": "1.0.0",
+    "description": "Can the user and Safely are libraries for verifying user CRUD and FLS permissions, as well as executing all DML in a safe, FLS and CRUD respecting way.",
+    "scripts": {
+        "prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+        "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+        "prettier:apex:local": "npm run apex:local:start & sleep 2 && prettier --apex-standalone-parser built-in --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\" && npm run apex:local:stop",
+        "prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+        "apexdocs": "apexdocs-generate -c apexDocsConfig.json -o false -p global public private protected namespaceaccessible -s force-app/main/default/classes && rm docs/index.md",
+        "apex:local:start": "node node_modules/prettier-plugin-apex/bin/start-apex-server.js",
+        "apex:local:stop": "node node_modules/prettier-plugin-apex/bin/stop-apex-server.js",
+        "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
+        "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
+        "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
+        "test:unit:coverage": "sfdx-lwc-jest --coverage --skipApiVersionCheck",
+        "precommit": "npm run apex:local:start & sleep 2 && npm run apexdocs && npm run prettier:apex:local && npm run apex:local:stop"
+    },
+    "url": "git+https://github.com/codefriar/cantheuser",
+    "author": "Kevin Poorman",
+    "license": "CC0-1.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/codefriar/cantheuser"
+    },
+    "engines": {
+        "node": ">= 10.13.0",
+        "npm": ">= 6.5.0"
+    },
+    "devDependencies": {
+        "@cparra/apexdocs": "^2.5.1",
+        "@prettier/plugin-xml": "^2.2.0",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^8.5.0",
+        "husky": "^8.0.1",
+        "prettier": "^2.7.1",
+        "prettier-plugin-apex": "^1.10.0",
+        "semver": "^7.3.7"
+    },
+    "dependencies": {
+        "sfdx-cli": "^7.159.0"
+    }
 }

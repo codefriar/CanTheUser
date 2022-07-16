@@ -52,7 +52,7 @@ jobs:
 
             # Upload code coverage data
             - name: 'Upload code coverage for Apex to Codecov.io'
-              uses: codecov/codecov-action@v1
+              uses: codecov/codecov-action@v3
 
             # Housekeeping
             - name: 'Delete scratch org'
@@ -65,7 +65,7 @@ jobs:
         steps:
             # Checkout the source code
             - name: 'Checkout source code'
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             # Check for package changes using git diff and looking for 'src' folder
             - name: 'Check for package changes'
