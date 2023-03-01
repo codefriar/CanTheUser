@@ -31,7 +31,7 @@
     "@cparra/apexdocs": "^2.3.0",
     "@sa11y/jest": "^3.1.0",
     "@prettier/plugin-xml": "^2.2.0",
-    "@salesforce/eslint-config-lwc": "^0.11.0",
+    "@salesforce/eslint-config-lwc": "^3.4.0",
     "@salesforce/sfdx-lwc-jest": "^1.1.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
